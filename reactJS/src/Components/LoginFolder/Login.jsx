@@ -4,6 +4,7 @@ import { Button, Modal} from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import logo from "../Images/logoDefault.png";
+import { BASE_URL } from "../../configs";
 import "./Login.css";
 
 function Login(props) {
@@ -31,7 +32,7 @@ const handleShow = () => setShow(true);
     };
     await axios
       .post(
-        "http://localhost:3001/user/login",
+        `${BASE_URL}/user/login`,
         user,
         config
       )

@@ -4,6 +4,8 @@ import logo from "../Images/logoDefault.png";
 import { useNavigate } from "react-router-dom";
 import { NavLink as Link } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../../configs";
+
 function Register() {
   let navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -27,7 +29,7 @@ function Register() {
     };
     await axios
       .post(
-        "http://localhost:3001/user/register",
+        `${BASE_URL}/user/register`,
         newUser,
         config
       )

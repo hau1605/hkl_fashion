@@ -16,6 +16,7 @@ import React from "react";
 //     import("../MessengerComponent/MessengerComponent")
 // );
 import MessengerComponent from "../MessengerComponent/MessengerComponent";
+import { BASE_URL } from "../../configs";
 
 function ShipAddress() {
     const dispatch = useDispatch();
@@ -334,7 +335,7 @@ function ShipAddress() {
             total: Number(data - data * percentDiscount + shipcost),
         };
         try {
-            const response = await fetch("http://localhost:3001/send-email", {
+            const response = await fetch(`${BASE_URL}/send-email`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

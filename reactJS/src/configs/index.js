@@ -1,0 +1,1 @@
+export const BASE_URL = "https://hkl-fashion-be.vercel.app";
