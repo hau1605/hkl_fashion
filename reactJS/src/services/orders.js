@@ -1,4 +1,4 @@
-import axios from `axios`;
+import axios from 'axios';
 import { BASE_URL } from "../configs/index.js";
 
 class OrderDataService {
