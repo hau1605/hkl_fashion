@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import ProductDataService from '../../services/products';
 import CatagoryDataService from '../../services/catagories';
 import React from 'react';
-import MessengerComponent from '../MessengerComponent/MessengerComponent';
+// import MessengerComponent from '../MessengerComponent/MessengerComponent';
 // const MessengerComponent = React.lazy(() =>
 //     import("../MessengerComponent/MessengerComponent")
 // );
@@ -65,7 +65,7 @@ function TypeProduct() {
                     </div>
                 ))}
             </div>
-            <MessengerComponent/>
+            {/* <MessengerComponent/> */}
         </div>
     );
 }
