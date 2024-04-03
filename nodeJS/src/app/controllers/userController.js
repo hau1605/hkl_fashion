@@ -1,7 +1,7 @@
 const httpError = require('http-errors');
 const { userValidate, loginValidate, phoneValidate } = require('../../helpers/validation');
 const { signAccessToken, signRefreshToken, verifyRefreshToken } = require('../../helpers/jwt_service');
-const client = require('../../helpers/connection_redis');
+// const client = require('../../helpers/connection_redis');
 const Order = require('../models/order/order');
 const OrderDetail = require('../models/order/order_detail');
 const User = require('../models/user/user');
@@ -98,14 +98,14 @@ class UserController {
             const { refreshToken } = req.body;
             if (!refreshToken) throw httpError.BadRequest();
 
-            const { userId } = await verifyRefreshToken(refreshToken);
-            client.del(userId.toString(), (err, reply) => {
-                if (err) throw httpError.InternalServerError();
+            // const { userId } = await verifyRefreshToken(refreshToken);
+            // client.del(userId.toString(), (err, reply) => {
+            //     if (err) throw httpError.InternalServerError();
 
                 res.json({
                     message: 'Logout',
                 });
-            });
+            // });
         } catch (error) {
             next(error);
         }
@@ -140,10 +140,10 @@ class UserController {
                 .then(() => {
                     res.send('Cập nhật dữ liệu thành công');
                     // Xóa cache người dùng khỏi Redis
-                    client.del(`user:${req.params.id}`, (err) => {
-                        if (err) throw err;
-                        else console.log('Đã xóa cache người dùng khỏi Redis');
-                    });
+                    // client.del(`user:${req.params.id}`, (err) => {
+                    //     if (err) throw err;
+                    //     else console.log('Đã xóa cache người dùng khỏi Redis');
+                    // });
                 })
                 .catch(() => res.send('Cập nhật dữ liệu thất bại'));
         } catch (error) {

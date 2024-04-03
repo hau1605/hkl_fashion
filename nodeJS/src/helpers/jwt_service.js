@@ -1,6 +1,6 @@
 const JWT = require('jsonwebtoken');
 const httpError = require('http-errors');
-const client = require('../helpers/connection_redis');
+// const client = require('../helpers/connection_redis');
 const signAccessToken = async (userId) => {
     return new Promise((resolve, reject) => {
         const payload = {
@@ -30,11 +30,11 @@ const signRefreshToken = async (userId) => {
 
         JWT.sign(payload, secret, options, (err, token) => {
             if (err) reject(err);
-            client.set(userId.toString(), token, 'EX', 365 * 24 * 60 * 60, (err, reply) => {
-                if (err) return reject(httpError.InternalServerError());
+            // client.set(userId.toString(), token, 'EX', 365 * 24 * 60 * 60, (err, reply) => {
+            //     if (err) return reject(httpError.InternalServerError());
 
                 resolve(token);
-            });
+            // });
         });
     });
 };
@@ -66,13 +66,13 @@ const verifyRefreshToken = async (refreshToken) => {
     return new Promise((resolve, reject) => {
         JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
             if (err) return reject(err);
-            client.get(payload.userId, (err, reply) => {
-                if (err) return reject(httpError.InternalServerError());
+            // client.get(payload.userId, (err, reply) => {
+            //     if (err) return reject(httpError.InternalServerError());
 
                 if (refreshToken === reply) return resolve(payload);
 
                 return reject(httpError.Unauthorized());
-            });
+            // });
         });
     });
 };

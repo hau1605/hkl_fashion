@@ -12,9 +12,6 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-const MessengerComponent = React.lazy(() =>
-    import("../MessengerComponent/MessengerComponent")
-);
 
 function FooterDefault() {
     const [expanded, setExpanded] = React.useState(false);
@@ -247,7 +244,6 @@ function FooterDefault() {
                     Copyright &copy; 2023 HKLFashion&reg;. Powered by HKLFashion
                 </p>
             </div>
-            {/* <MessengerComponent/> */}
         </div>
     );
 }

@@ -141,8 +141,9 @@ function HeaderDefault(props) {
                             id="product-list-mobile"
                         />
                         <ul className="type-mobile-product">
-                            {catagories.map((item) => (
+                            {catagories.map((item, index) => (
                                 <ListTypeProductMobile
+                                    key={index}
                                     _id={item._id}
                                     name={item.name}
                                 />
@@ -191,8 +192,9 @@ function HeaderDefault(props) {
                     <div className="product-header">
                         <Nav.Link href="/Products">Sản phẩm</Nav.Link>
                         <ul className="type-product">
-                            {catagories.map((item) => (
+                            {catagories.map((item, index) => (
                                 <ListTypeProduct
+                                    key={index}
                                     _id={item._id}
                                     name={item.name}
                                 />

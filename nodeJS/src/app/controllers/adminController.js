@@ -7,64 +7,64 @@ const Order = require('../models/order/order');
 const OrderDetail = require('../models/order/order_detail');
 const { userValidate } = require('../../helpers/validation');
 const { TestGetListUser } = require('./userController');
-const client = require('../../helpers/connection_redis');
+// const client = require('../../helpers/connection_redis');
 const cloudinary = require('cloudinary').v2;
 
 // const ProductDetail = require('../models/products/product_detail');
 // const CategoryDetail = require('../models/products/category_detail');
 
-function getDataFromCacheOrDatabase(cacheKey, databaseQuery, res, next) {
-    // Check if data is in Redis cache
-    client.get(cacheKey, (err, cachedData) => {
-        if (err) {
-            console.error('Error retrieving data from Redis cache:', err);
-            return next(err);
-        }
+// function getDataFromCacheOrDatabase(cacheKey, databaseQuery, res, next) {
+//     // Check if data is in Redis cache
+//     client.get(cacheKey, (err, cachedData) => {
+//         if (err) {
+//             console.error('Error retrieving data from Redis cache:', err);
+//             return next(err);
+//         }
 
-        if (cachedData) {
-            // If cached data exists, send it as the response
-            console.log('Data retrieved from Redis cache');
-            const parsedData = JSON.parse(cachedData);
-            return res.json(parsedData);
-        }
+//         if (cachedData) {
+//             // If cached data exists, send it as the response
+//             console.log('Data retrieved from Redis cache');
+//             const parsedData = JSON.parse(cachedData);
+//             return res.json(parsedData);
+//         }
 
-        // If not in cache, query the database
-        databaseQuery()
-            .exec()
-            .then((products) => {
-                const data = products.map(HandleAddImage);
+//         // If not in cache, query the database
+//         databaseQuery()
+//             .exec()
+//             .then((products) => {
+//                 const data = products.map(HandleAddImage);
 
-                // Use Promise.all to wait for all asynchronous operations to complete
-                Promise.all(data).then((result) => {
-                    // Send the response
-                    res.json(result); // Sending the result, not the original 'data'
-                    console.log('Data cached in Redis');
+//                 // Use Promise.all to wait for all asynchronous operations to complete
+//                 Promise.all(data).then((result) => {
+//                     // Send the response
+//                     res.json(result); // Sending the result, not the original 'data'
+//                     console.log('Data cached in Redis');
 
-                    // Save result to Redis cache
-                    client.setex(cacheKey, 300, JSON.stringify(result)); // Set expiration time to 1 minute
-                });
-            })
-            .catch(next);
-    });
-}
+//                     // Save result to Redis cache
+//                     client.setex(cacheKey, 300, JSON.stringify(result)); // Set expiration time to 1 minute
+//                 });
+//             })
+//             .catch(next);
+//     });
+// }
 
 // Function to delete an array of cache keys
-function deleteCacheKeys(cacheKeys) {
-    const cacheDeletions = cacheKeys.map((cacheKey) => {
-        return new Promise((resolve) => {
-            client.del(cacheKey, (err, numRemoved) => {
-                if (err) {
-                    console.error(`Redis cache error for key ${cacheKey}:`, err);
-                }
-                console.log(`Cleared cache for ${numRemoved} key(s)`);
-                resolve();
-            });
-        });
-    });
+// function deleteCacheKeys(cacheKeys) {
+//     const cacheDeletions = cacheKeys.map((cacheKey) => {
+//         return new Promise((resolve) => {
+//             client.del(cacheKey, (err, numRemoved) => {
+//                 if (err) {
+//                     console.error(`Redis cache error for key ${cacheKey}:`, err);
+//                 }
+//                 console.log(`Cleared cache for ${numRemoved} key(s)`);
+//                 resolve();
+//             });
+//         });
+//     });
 
-    // Return a Promise that resolves when all cache deletions are complete
-    return Promise.all(cacheDeletions);
-}
+//     // Return a Promise that resolves when all cache deletions are complete
+//     return Promise.all(cacheDeletions);
+// }
 
 function HandleAddImage(product) {
     return ProductDetail.find({ product_id: product._id })
@@ -77,29 +77,29 @@ function HandleAddImage(product) {
         });
 }
 
-const cacheKeysToDelete = ['topSellingProducts', 'discountedProducts', 'newProducts', 'allProductsAdmin'];
+// const cacheKeysToDelete = ['topSellingProducts', 'discountedProducts', 'newProducts', 'allProductsAdmin'];
 
 class AdminController {
     // GET /admin/product
     ShowProduct(req, res, next) {
-        // Product.find({})
-        //     .populate({ path: 'category_detail_id', select: 'name' })
-        //     .exec()
-        //     .then((products) => {
-        //         const data = products.map(HandleAddImage);
-        //         Promise.all(data).then((result) => {
-        //             res.json(result);
-        //         });
-        //     });
+        Product.find({})
+            .populate({ path: 'category_detail_id', select: 'name' })
+            .exec()
+            .then((products) => {
+                const data = products.map(HandleAddImage);
+                Promise.all(data).then((result) => {
+                    res.json(result);
+                });
+            });
 
-        const cacheKey = 'allProductsAdmin'; // Unique cache key for all products
+        // const cacheKey = 'allProductsAdmin'; // Unique cache key for all products
 
-        getDataFromCacheOrDatabase(
-            cacheKey,
-            () => Product.find({}).populate({ path: 'category_detail_id', select: 'name' }),
-            res,
-            next,
-        );
+        // getDataFromCacheOrDatabase(
+        //     cacheKey,
+        //     () => Product.find({}).populate({ path: 'category_detail_id', select: 'name' }),
+        //     res,
+        //     next,
+        // );
     }
 
     // GET /admin/product/:id/product-detail
@@ -130,13 +130,13 @@ class AdminController {
         //         .catch(() => res.send('THÊM KHÔNG THÀNH CÔNG'));
         // });
 
-        deleteCacheKeys(cacheKeysToDelete)
-            .then(() => {
-                console.log('Cache keys deleted successfully');
-            })
-            .catch((error) => {
-                console.error('Error deleting cache keys:', error);
-            });
+        // deleteCacheKeys(cacheKeysToDelete)
+        //     .then(() => {
+        //         console.log('Cache keys deleted successfully');
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error deleting cache keys:', error);
+        //     });
 
         // Proceed with updating the product
         const product = new Product(req.body);
@@ -186,15 +186,16 @@ class AdminController {
         productDetail
             .save()
             .then(() => {
-                // Clear the cached data for specific keys related to product details
+                res.send('THÊM CHI TIẾT SẢN PHẨM THÀNH CÔNG');
 
-                return deleteCacheKeys(cacheKeysToDelete)
-                    .then(() => {
-                        res.send('THÊM CHI TIẾT SẢN PHẨM THÀNH CÔNG');
-                    })
-                    .catch(() => {
-                        res.send('THÊM CHI TIẾT SẢN PHẨM THÀNH CÔNG, NHƯNG LỖI KHI XÓA CACHE');
-                    });
+                // Clear the cached data for specific keys related to product details
+                // return deleteCacheKeys(cacheKeysToDelete)
+                //     .then(() => {
+                //         res.send('THÊM CHI TIẾT SẢN PHẨM THÀNH CÔNG');
+                //     })
+                //     .catch(() => {
+                //         res.send('THÊM CHI TIẾT SẢN PHẨM THÀNH CÔNG, NHƯNG LỖI KHI XÓA CACHE');
+                //     });
             })
             .catch((err) => {
                 console.log(err);
@@ -217,15 +218,16 @@ class AdminController {
 
         ProductDetail.deleteOne({ _id: productDetailID })
             .then(() => {
-                // Clear the cached data for specific keys related to product details
+                res.send('Xóa chi tiết sản phẩm thành công');
 
-                return deleteCacheKeys(cacheKeysToDelete)
-                    .then(() => {
-                        res.send('Xóa chi tiết sản phẩm thành công');
-                    })
-                    .catch(() => {
-                        res.send('Xóa chi tiết sản phẩm thành công, nhưng lỗi khi xóa cache');
-                    });
+                // Clear the cached data for specific keys related to product details
+                // return deleteCacheKeys(cacheKeysToDelete)
+                //     .then(() => {
+                //         res.send('Xóa chi tiết sản phẩm thành công');
+                //     })
+                //     .catch(() => {
+                //         res.send('Xóa chi tiết sản phẩm thành công, nhưng lỗi khi xóa cache');
+                //     });
             })
             .catch(() => res.send('Xóa chi tiết sản phẩm thất bại'));
     }
@@ -248,15 +250,16 @@ class AdminController {
         Product.updateOne({ _id: productId }, req.body)
             .exec()
             .then(() => {
+                res.send('Update sản phẩm thành công');
+               
                 // Clear the cached data for specific keys related to the updated product
-
-                return deleteCacheKeys(cacheKeysToDelete)
-                    .then(() => {
-                        res.send('Update sản phẩm thành công');
-                    })
-                    .catch(() => {
-                        res.send('Update sản phẩm thành công, nhưng lỗi khi xóa cache');
-                    });
+                // return deleteCacheKeys(cacheKeysToDelete)
+                //     .then(() => {
+                //         res.send('Update sản phẩm thành công');
+                //     })
+                //     .catch(() => {
+                //         res.send('Update sản phẩm thành công, nhưng lỗi khi xóa cache');
+                //     });
             })
             .catch(() => res.send('Update sản phẩm thất bại'));
     }
@@ -279,13 +282,14 @@ class AdminController {
         Product.deleteOne({ _id: productId })
             .exec()
             .then(() => {
-                return deleteCacheKeys(cacheKeysToDelete)
-                    .then(() => {
-                        res.send('Xóa sản phẩm thành công');
-                    })
-                    .catch(() => {
-                        res.send('Xóa sản phẩm thành công, nhưng lỗi khi xóa cache');
-                    });
+                res.send('Xóa sản phẩm thành công');
+                // return deleteCacheKeys(cacheKeysToDelete)
+                //     .then(() => {
+                //         res.send('Xóa sản phẩm thành công');
+                //     })
+                //     .catch(() => {
+                //         res.send('Xóa sản phẩm thành công, nhưng lỗi khi xóa cache');
+                //     });
             })
             .catch(() => res.send('Xóa sản phẩm thất bại'));
     }
@@ -337,28 +341,28 @@ class AdminController {
     EditUser(req, res, next) {
         const userId = req.params.id;
         const cacheKey = `user:${userId}`;
-        client.del(cacheKey, (err, numRemoved) => {
-            if (err) throw err;
-            console.log(`Cleared cache for ${numRemoved} key(s)`);
+        // client.del(cacheKey, (err, numRemoved) => {
+        //     if (err) throw err;
+        //     console.log(`Cleared cache for ${numRemoved} key(s)`);
             User.updateOne({ _id: userId }, req.body)
                 .exec()
                 .then(() => res.send('Update người dùng thành công'))
                 .catch(() => res.send('Update người dùng thất bại'));
-        });
+        // });
     }
 
     // DELETE /admin/user/delete/:id
     DestroyUser(req, res, next) {
         const userId = req.params.id;
         const cacheKey = `user:${userId}`;
-        client.del(cacheKey, (err, numRemoved) => {
-            if (err) throw err;
-            console.log(`Cleared cache for ${numRemoved} key(s)`);
+        // client.del(cacheKey, (err, numRemoved) => {
+        //     if (err) throw err;
+        //     console.log(`Cleared cache for ${numRemoved} key(s)`);
             User.deleteOne({ _id: userId })
                 .exec()
                 .then(() => res.send('Xóa người dùng thành công!!'))
                 .catch(() => res.send('Xóa người dùng thất bại!!'));
-        });
+        // });
     }
 
     ShowOrder(req, res, next) {

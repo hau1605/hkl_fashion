@@ -23,10 +23,10 @@ return (
   <div className="slider" id='banner_slide'>
     
     <Slider {...settings}>
-    {sliderData.map((slide)=> {
+    {sliderData.map((slide, index)=> {
         return(
             <div >
-                <img src={slide.image} alt="banner" />
+                <img src={slide.image} key={index} alt="banner" />
             </div>
             )
         })}
