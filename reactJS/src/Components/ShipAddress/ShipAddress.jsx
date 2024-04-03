@@ -15,7 +15,7 @@ import React from "react";
 // const MessengerComponent = React.lazy(() =>
 //     import("../MessengerComponent/MessengerComponent")
 // );
-import MessengerComponent from "../MessengerComponent/MessengerComponent";
+// import MessengerComponent from "../MessengerComponent/MessengerComponent";
 import { BASE_URL } from "../../configs";
 
 function ShipAddress() {
@@ -669,7 +669,7 @@ function ShipAddress() {
                 </div>
             </div>
 
-            <MessengerComponent />
+            {/* <MessengerComponent /> */}
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

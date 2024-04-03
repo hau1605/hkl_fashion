@@ -5,9 +5,9 @@ import { useLocation } from "react-router-dom";
 import ProductDataService from "../../services/products";
 import ContainerItem from '../ContainerItem';
 import { Typography, Box } from "@mui/material";
-const MessengerComponent = React.lazy(() =>
-    import("../MessengerComponent/MessengerComponent")
-);
+// const MessengerComponent = React.lazy(() =>
+//     import("../MessengerComponent/MessengerComponent")
+// );
 
 export default function Search(props) {
   const { state } = useLocation();
@@ -43,7 +43,7 @@ export default function Search(props) {
             <Typography fontSize={24}>Không tìm thấy sản phẩm nào!</Typography>
         </Box>
           }
-          <MessengerComponent/>
+          {/* <MessengerComponent/> */}
     </div>
   );
 }

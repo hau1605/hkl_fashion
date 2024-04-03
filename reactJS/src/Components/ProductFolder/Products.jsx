@@ -10,9 +10,9 @@ import CatagoryDataService from "../../services/catagories";
 import Pagination from "react-bootstrap/Pagination";
 import { Typography, Box } from "@mui/material";
 
-const MessengerComponent = React.lazy(() =>
-    import("../MessengerComponent/MessengerComponent")
-);
+// const MessengerComponent = React.lazy(() =>
+//     import("../MessengerComponent/MessengerComponent")
+// );
 
 function Products() {
     const [show, setShow] = useState(false);
@@ -260,7 +260,7 @@ function Products() {
             <div className="page">
                 {products.length !== 0 && <Pagination>{items}</Pagination>}
             </div>
-            <MessengerComponent />
+            {/* <MessengerComponent /> */}
         </div>
     );
 }

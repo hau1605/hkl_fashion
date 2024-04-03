@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import "./OrderDetail.css";
 import { Link, useParams, useLocation } from "react-router-dom";
 import OrderDataService from "../../services/orders";
-const MessengerComponent = React.lazy(() =>
-    import("../MessengerComponent/MessengerComponent")
-);
+// const MessengerComponent = React.lazy(() =>
+//     import("../MessengerComponent/MessengerComponent")
+// );
 
 export default function OrderDetail() {
   const { orderID } = useParams();
@@ -153,7 +153,7 @@ export default function OrderDetail() {
           </div>
         </div>
           </div>
-          <MessengerComponent/>
+          {/* <MessengerComponent/> */}
     </div>
   );
 }

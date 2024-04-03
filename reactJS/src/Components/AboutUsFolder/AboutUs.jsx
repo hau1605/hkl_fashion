@@ -4,9 +4,9 @@ import "./AboutUs.css";
 import about1 from "../Images/about/about1.jpg";
 import about2 from "../Images/about/about2.jpg";
 import about3 from "../Images/about/about3.png";
-const MessengerComponent = React.lazy(() =>
-    import("../MessengerComponent/MessengerComponent")
-);
+// const MessengerComponent = React.lazy(() =>
+//     import("../MessengerComponent/MessengerComponent")
+// );
 
 function About() {
   return (
@@ -121,7 +121,7 @@ function About() {
                   </div>
               </div>
           </div>
-          <MessengerComponent />
+          {/* <MessengerComponent /> */}
       </div>
   );
 }

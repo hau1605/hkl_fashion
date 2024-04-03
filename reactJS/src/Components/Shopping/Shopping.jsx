@@ -18,9 +18,9 @@ import {
   clearCart,
 } from "../../redux/cartSlide";
 
-const MessengerComponent = React.lazy(() =>
-    import("../MessengerComponent/MessengerComponent")
-);
+// const MessengerComponent = React.lazy(() =>
+//     import("../MessengerComponent/MessengerComponent")
+// );
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -264,7 +264,7 @@ function Shopping() {
         )}
           </div>
 
-          <MessengerComponent/>
+          {/* <MessengerComponent/> */}
     </div>
   );
 }
